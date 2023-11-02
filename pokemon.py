@@ -128,7 +128,7 @@ def selectPokemon(name1, name2):
         if isPokemon2:
             break
         else:
-            "This Pokemon is not in the list. Please try again."
+             "This Pokemon is not in the list. Please try again."
 
     player1 = Pokemon(pokemon_name1, name1)
     player2 = Pokemon(pokemon_name2, name2)
