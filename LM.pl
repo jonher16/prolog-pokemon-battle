@@ -3,8 +3,8 @@
 % Identification of subject
 identify_subject(Subject) :-
     subjects(ValidSubjects),
-    member(Subject, ValidSubjects),
-    write('check').
+    member(Subject, ValidSubjects)
+    .
 
 % Identification of the Verb Type
 identify_verb_type(Word, move) :- 
@@ -88,7 +88,7 @@ parse_input(Input, VerbType, NPType, Intensity, Direction, VerbWord, NPWords) :-
     split_string(Input, " ", "", Words),
     maplist(atom_string, Atoms, Words),  % Convert strings to atoms
     ( 
-       (extract_verb_np_sub(Atoms, VerbWord, NPWords),Atoms = [Subject|Rest], identify_subject(Subject), write('Subject identified'));
+       (extract_verb_np_sub(Atoms, VerbWord, NPWords),Atoms = [Subject|Rest], identify_subject(Subject));
         extract_verb_np_nosub(Atoms, VerbWord, NPWords)
     ),
     identify_verb_type(VerbWord, VerbType),
