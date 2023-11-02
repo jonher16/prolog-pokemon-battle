@@ -182,9 +182,35 @@ normal_words([
     'swipe',
     'spit',
     'bite',
-    'throw'
+    'throw',
+    'grab',
+    'twist',
+    'flip',
+    'pinch',
+    'drag',
+    'drop',
+    'kickback',
+    'pull',
+    'rip',
+    'tug',
+    'whirl',
+    'flick',
+    'snap',
+    'punch',
+    'shout',
+    'scream',
+    'charge',
+    'rush',
+    'blast',
+    'shoot',
+    'explode',
+    'burst',
+    'dash',
+    'sprint',
+    'jump',
+    'leap',
+    'dive'
 ]).
-
 
 % Dodge words
 dodge_words([

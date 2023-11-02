@@ -3,7 +3,8 @@
 % Identification of subject
 identify_subject(Subject) :-
     subjects(ValidSubjects),
-    member(Subject, ValidSubjects).
+    member(Subject, ValidSubjects),
+    write('check').
 
 % Identification of the Verb Type
 identify_verb_type(Word, move) :- 
@@ -82,35 +83,22 @@ identify_direction(Words, Direction) :-
     !.
 identify_direction(_, none).
 
-% DGC
-s_with_subject([Subject|Rest], Rest) --> subject(Subject), verb(_), noun_phrase(_).
-s_without_subject --> verb(_), noun_phrase(_).
-
-subject(_) --> [Sub], { atom_string(_, Sub) }.
-
-verb(VerbWord) --> [VerbWord].
-noun_phrase(NPWords) --> np_list(NPWords).
-
-np_list([Word|Rest]) --> [Word], np_list(Rest).
-np_list([]) --> [].
-
 % Output
 parse_input(Input, VerbType, NPType, Intensity, Direction, VerbWord, NPWords) :-
     split_string(Input, " ", "", Words),
     maplist(atom_string, Atoms, Words),  % Convert strings to atoms
     ( 
-        (phrase(s_with_subject(Subject, Rest), Atoms), identify_subject(Subject));
-        phrase(s_without_subject, Atoms)
+       (extract_verb_np_sub(Atoms, VerbWord, NPWords),Atoms = [Subject|Rest], identify_subject(Subject), write('Subject identified'));
+        extract_verb_np_nosub(Atoms, VerbWord, NPWords)
     ),
-    extract_verb_np(Atoms, VerbWord, NPWords),
     identify_verb_type(VerbWord, VerbType),
     identify_np_type(NPWords, NPType),
     identify_intensity(NPWords, Intensity),
     identify_direction(NPWords, Direction).
 
 % Helper to extract verb and NP words based on list structure
-extract_verb_np([_, VerbWord | NPWords], VerbWord, NPWords).
-extract_verb_np([VerbWord | NPWords], VerbWord, NPWords).
+extract_verb_np_sub([_, VerbWord | NPWords], VerbWord, NPWords).
+extract_verb_np_nosub([VerbWord | NPWords], VerbWord, NPWords).
 
 input(Input) :-
     parse_input(Input, VerbType, NPType, Intensity, Direction, VerbWord, NPWords),
