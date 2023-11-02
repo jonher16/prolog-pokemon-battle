@@ -209,7 +209,8 @@ normal_words([
     'sprint',
     'jump',
     'leap',
-    'dive'
+    'dive',
+    'use'
 ]).
 
 % Dodge words

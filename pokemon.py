@@ -16,8 +16,9 @@ pokemons = [
 ]
 
 class Pokemon:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, pokemon_name, player_name):
+        self.pokemon_name = pokemon_name
+        self.player_name = player_name
         self.hp = 100  
         self.pp = 10  
         self.distance = 0  
@@ -100,3 +101,40 @@ def calculate_consequences(opponent, damage, miss_chance, intensity):
         print(f"{opponent.name} avoided the attack!")
 
     return damage, miss_chance
+
+def checkPokemon(pokemon, pokemon_names):
+    if pokemon in pokemon_names:
+        return pokemon
+    else:
+        print('Error: This pokemon is not on the list. Please select another one.')
+        return None
+
+def selectPokemon(name1, name2):
+
+    pokemon_names = [pokemon["name"] for pokemon in pokemons]
+    print(f"Available Pokemons: {', '.join(pokemon_names)}")
+
+    while True:
+        pokemon_name1 = input(f"{name1}, choose your Pokemon: ")
+        isPokemon1 = checkPokemon(pokemon_name1, pokemon_names)
+        if isPokemon1:
+            break
+        else:
+            "This Pokemon is not in the list. Please try again."
+
+    pokemon_name2 = input(f"{name2}, choose your Pokemon: ")
+            isPokemon2 = checkPokemon(pokemon_name2, pokemon_names)
+            if isPokemon2:
+                break
+            else:
+                "This Pokemon is not in the list. Please try again."
+
+    player1 = Pokemon(pokemon_name1, name1)
+    player2 = Pokemon(pokemon_name2, name2)
+
+    return player1, player2
+
+def inputNames():
+    name1 = input("Enter Player 1's name: ")
+    name2 = input("Enter Player 2's name: ")
+    return name1, name2

@@ -29,5 +29,4 @@ def askLanguageModel(user_input):
         parsed_results.append(parsed_result)
 
     # Now parsed_results contains the extracted string values
-    print(parsed_results)
     return parsed_results
