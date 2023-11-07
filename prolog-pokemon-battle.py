@@ -118,9 +118,9 @@ def main():
 
     print("Battle is over!")
     if player1.is_alive():
-        print(f"{player1.name}'s {player1.pokemon_name} wins!")
+        print(f"{player1.player_name}'s {player1.pokemon_name} wins!")
     else:
-        print(f"{player2.name}'s {player2.pokemon_name} wins!")
+        print(f"{player2.player_name}'s {player2.pokemon_name} wins!")
 
 if __name__ == "__main__":
     main()
