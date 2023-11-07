@@ -13,16 +13,16 @@ verbinpast(P1, VerbWord, NPWords, Feedback1) :-
 feedback(VerbType, NPType, EType, Intensity, Direction, Feedback, Multiplier) :-
 
      % MOVEMENT
-    (Direction == 'forward', Feedback = 'The Pokémon moved closer to the enemy!', Multiplier = 'none', !);
-    (Direction == 'backward', Feedback = 'The Pokémon moved away from the enemy!', Multiplier = 'none', !);
+    %(Direction == 'forward', Feedback = 'The Pokémon moved closer to the enemy!', Multiplier = 'none', !);
+    %(Direction == 'backward', Feedback = 'The Pokémon moved away from the enemy!', Multiplier = 'none', !);
 
     % DODGE
-    (VerbType == 'dodge', Feedback = 'The attack was dodged!', Multiplier = 'none', !);
-    (VerbType == 'nododge', Feedback = 'The Pokémon failed at dodging the attack!', Multiplier = 'none', !);
+    %(VerbType == 'dodge', Feedback = 'The attack was dodged!', Multiplier = 'none', !);
+    %(VerbType == 'nododge', Feedback = 'The Pokémon failed at dodging the attack!', Multiplier = 'none', !);
 
     %DEFEND
-    (VerbType == 'defend', Feedback = 'The pokemon successfully defended itself from the enemy attack!', Multiplier = 'none', !);
-    (VerbType == 'nodefend', Feedback = 'The Pokémon failed at defending! The defense was broken!', Multiplier = 'none', !);
+    %(VerbType == 'defend', Feedback = 'The pokemon successfully defended itself from the enemy attack!', Multiplier = 'none', !);
+    %(VerbType == 'nodefend', Feedback = 'The Pokémon failed at defending! The defense was broken!', Multiplier = 'none', !);
 
     % WATER -> FIRE
     (NPType == 'water', EType == 'fire', Intensity == 'strong', Feedback = 'The attack was super effective!', Multiplier = 3);

@@ -6,6 +6,8 @@ from pokemon import Pokemon
 from pokemon import checkPokemon
 from pokemon import inputNames
 from pokemon import selectPokemon
+from pokemon import handle_defend
+from pokemon import handle_dodge
 from parse_LM import askLanguageModel
 from parse_IE import askInferenceEngine
 
@@ -23,8 +25,8 @@ def main():
 
     while player1.is_alive() and player2.is_alive():
 
-        print(f"{current_player.player_name}'s turn:")
-        print(f"Your Pokemon: {current_player.pokemon_name}, HP: {current_player.hp}")
+        print(f"\n{current_player.player_name}'s turn:")
+        print(current_player)
         print("Enter your action:")
         user_command = input().lower()
 
@@ -34,7 +36,6 @@ def main():
         fol = fol_results[0]
         print("First Order Logic", fol)
 
-        #TODO: Prolog inference engine takes FOL and retrieves feedback
         ie_input = fol
         ie_input["Etype"] = player2
         ie_input["P1"] = player2
@@ -47,23 +48,65 @@ def main():
         Direction = ie_input['Direction']
         VerbWord = ie_input['VerbWord']
         NPWords = ie_input['NPWords']
-        pokemon_type = next((p['type'] for p in pokemons if p['name'].lower() == current_player.pokemon_name.lower()), None)
-        EType = pokemon_type
+        op_pokemon_type = next((p['type'] for p in pokemons if p['pokemon_name'].lower() == opponent.pokemon_name.lower()), None)
+        EType = op_pokemon_type
         P1 = current_player.pokemon_name
         P2 = opponent.pokemon_name
         
         #TODO: Handle case when trainer tries to command a fire pokemon to do a water attack
-        #TODO: Calculate dodge / defense probabilities and handle dodge-> nododge
+
+        flag_skip = False #Flag for skipping attack phase
+
+
+        if opponent.is_dodging and ((VerbType != 'defend') or (VerbType != 'dodge') or (VerbType != 'move')): #Only If opponent is dodging and current pokemon attacks
+            success = handle_dodge(opponent)
+            if success == False:
+                flag_skip = True
+                print(f"{opponent.pokemon_name} avoided the attack!")
+                #TODO Decrease dodge chance a 10%
+            else:
+                print(f"{opponent.pokemon_name} did not succeed avoiding the attack!")
+                #VerbType == 'nododge'
         
-        # Create the formatted string
-        formatted_ie_input = f"parse_input('{VerbType}', '{NPType}', '{Intensity}', '{Direction}', '{VerbWord}', {NPWords}, '{EType}', '{P1}', '{P2}', Feedback1, Feedback2, Multiplier)."
-        print("IE input:",formatted_ie_input)
-        #Get result from inference engine
-        f1, f2, multiplier = askInferenceEngine(formatted_ie_input)
+        if opponent.is_defending and ((VerbType != 'defend') or (VerbType != 'dodge') or (VerbType != 'move')): #Only If opponent is defending and current pokemon attacks
+            success = handle_defend(opponent, Intensity)
+            if success == True:
+                flag_skip = True
+                print(f"{opponent.pokemon_name} protected from the attack!")
+                #VerbType == 'nodefense'
+            else:
+                print(f"{opponent.pokemon_name}'s defense was broken!")
+        
+        if opponent.is_defending:
+            opponent.is_defending = False # Opponent Stop defending no matter what after this turn
 
-        print("IE Response: ", f1, f2, multiplier) #Feedback1 (verb in past), Feedback2 (Effectivenes), Multiplier (Damage)
+        if opponent.is_dodging:
+            opponent.is_dodging = False # Opponent Stop dodging no matter what after this turn
 
-        #TODO: Stat calculations in Python
+        if VerbType == 'move':
+            current_player.move(opponent, Direction)
+            flag_skip = True
+
+        if VerbType == 'dodge':
+            current_player.dodge()
+            flag_skip = True
+        
+        if VerbType == 'defend':
+            current_player.defend()
+            flag_skip = True
+
+        if flag_skip == False:
+            # Create the formatted string
+
+            formatted_ie_input = f"parse_input('{VerbType}', '{NPType}', '{Intensity}', '{Direction}', '{VerbWord}', {NPWords}, '{EType}', '{P1}', '{P2}', Feedback1, Feedback2, Multiplier)."
+            print("IE input:",formatted_ie_input)
+
+            #Get result from inference engine
+            f1, f2, multiplier = askInferenceEngine(formatted_ie_input)
+
+            print("IE Response: ", f1, f2, multiplier) #Feedback1 (verb in past), Feedback2 (Effectiveness), Multiplier (Damage)
+
+            current_player.attack(opponent, multiplier)
 
         # Switch players
         if current_player == player1:
@@ -75,9 +118,9 @@ def main():
 
     print("Battle is over!")
     if player1.is_alive():
-        print(f"{name1}'s {player1.name} wins!")
+        print(f"{player1.name}'s {player1.pokemon_name} wins!")
     else:
-        print(f"{name2}'s {player2.name} wins!")
+        print(f"{player2.name}'s {player2.pokemon_name} wins!")
 
 if __name__ == "__main__":
     main()

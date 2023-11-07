@@ -2,15 +2,15 @@ import random
 
 pokemons = [
     {
-        "name": "Bulbasaur",
+        "pokemon_name": "Bulbasaur",
         "type": "grass",
     },
     {
-        "name": "Squirtle",
+        "pokemon_name": "Squirtle",
         "type": "water",
     },
     {
-        "name": "Charmander",
+        "pokemon_name": "Charmander",
         "type": "fire",
     }
 ]
@@ -20,87 +20,49 @@ class Pokemon:
         self.pokemon_name = pokemon_name
         self.player_name = player_name
         self.hp = 100  
-        self.pp = 10  
-        self.distance = 0  
+        self.distance = 2
         self.is_defending = False
+        self.is_dodging = False
+        self.base_damage = 10
+        self.avoid_chance = 0.5
+
+    def __str__(self):
+        str = f"Pokemon: {self.pokemon_name}\nHP: {self.hp}\nDistance to enemy pokemon: {self.distance}"
+        return str
 
     def is_alive(self):
         return self.hp > 0
 
-    def normal_attack(self, opponent, intensity):
-        damage, miss_chance = self.calculate_damage_and_chance(intensity)
-        
-        # Handle defense and avoidance here
-        damage, miss_chance = calculate_consequences(opponent, damage, miss_chance, intensity)
-        
-        if random.random() < miss_chance:
-            print(f"{self.name}'s attack missed!")
-            return
+    def attack(self, opponent, multiplier):
 
-        opponent.hp -= damage
-        self.pp -= 1
-        print(f"{self.name} attacked {opponent.name} for {damage} damage!")
+        #TODO Add miss chance depending on the adjective (NOT multiplier!!)
 
-    def calculate_damage_and_chance(self, intensity):
-        base_damage = 10
-        if intensity == "strong":
-            return base_damage * 1.5, 0.3
-        elif intensity == "weak":
-            return base_damage * 0.5, 0.1
-        return base_damage, 0.2
+        dmg = self.base_damage * multiplier
+        opponent.hp -= dmg
 
-    def special_attack(self, opponent):
-        damage = 20
-        # Handle defense and avoidance here
-        damage, miss_chance = calculate_consequences(opponent, damage, 0.2, "special")
-        if random.random() < miss_chance:
-            print(f"{self.name}'s attack missed!")
-            return
+        print(f"{self.pokemon_name} dealt to {opponent.pokemon_name} {dmg} HP damage!")
 
-        opponent.hp -= damage
-        self.pp -= 1
-        print(f"{self.name} used a special attack on {opponent.name} for {damage} damage!")
-
-    def move(self, direction):
+    def move(self, opponent, direction):
         if direction == "forward":
             self.distance -= 1
-        else:
+            opponent.distance -= 1
+        elif direction == "backward":
             self.distance += 1
-        print(f"{self.name} moved {direction} to the opponent!")
+            opponent.distance += 1
+        else:
+            print("Error: no direction specified. Skipping turn.")
+
+        print(f"{self.pokemon_name} moved {direction} to the opponent!")
 
     def defend(self):
         self.is_defending = True
-        print(f"{self.name} is defending!")
+        print(f"{self.pokemon_name} is defending for the next attack!")
 
-    def avoid(self, intensity):
-        avoid_chance = 0.5
-        if intensity == "strong":
-            avoid_chance = 0.3
-        elif intensity == "weak":
-            avoid_chance = 0.7
-        return random.random() < avoid_chance
-    
+    def dodge(self):
+        self.is_dodging = True
+        print(f"{self.pokemon_name} will try to avoid the next attack!")
 
-def calculate_consequences(opponent, damage, miss_chance, intensity):
-    # TODO: Replace with Prolog for better inference
-
-    # Handling defense
-    if opponent.is_defending:
-        if intensity == "strong" and opponent.distance == 0:
-            print(f"{opponent.name}'s defense was broken!")
-            opponent.is_defending = False
-        else:
-            damage = 0
-            print(f"{opponent.name} defended the attack!")
-    
-    # Handling avoidance
-    avoided = opponent.avoid(intensity)
-    if avoided:
-        damage = 0
-        miss_chance = 1
-        print(f"{opponent.name} avoided the attack!")
-
-    return damage, miss_chance
+## Utility functions
 
 def checkPokemon(pokemon, pokemon_names):
     if pokemon in pokemon_names:
@@ -111,7 +73,7 @@ def checkPokemon(pokemon, pokemon_names):
 
 def selectPokemon(name1, name2):
 
-    pokemon_names = [pokemon["name"] for pokemon in pokemons]
+    pokemon_names = [pokemon["pokemon_name"] for pokemon in pokemons]
     print(f"Available Pokemons: {', '.join(pokemon_names)}")
 
     while True:
@@ -131,11 +93,24 @@ def selectPokemon(name1, name2):
              "This Pokemon is not in the list. Please try again."
 
     player1 = Pokemon(pokemon_name1, name1)
-    player2 = Pokemon(pokemon_name2, name2)
+    player2 = Pokemon(pokemon_name2, name2) 
 
     return player1, player2
 
 def inputNames():
+
     name1 = input("Enter Player 1's name: ")
     name2 = input("Enter Player 2's name: ")
     return name1, name2
+
+def handle_defend(opponent, intensity):
+        
+        defend_success = True
+        if (opponent.distance <=2 and intensity == "strong" ):
+            defend_success = False
+        return defend_success
+
+def handle_dodge(opponent):
+        
+        random_no = random.random()
+        return True if random_no <= opponent.avoid_chance else False #Succeed avoiding if random number within the avoiding chancess
