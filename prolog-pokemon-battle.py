@@ -63,7 +63,7 @@ def main():
             if success == True:
                 flag_skip = True
                 print(f"{opponent.pokemon_name} avoided the attack!")
-                #TODO Decrease dodge chance a 10%
+                opponent.avoid_chance *= 0.9
             else:
                 print(f"{opponent.pokemon_name} did not succeed avoiding the attack!")
                 #VerbType == 'nododge'
@@ -95,18 +95,32 @@ def main():
             current_player.defend()
             flag_skip = True
 
+        #In case the command is actually an attack
         elif flag_skip == False:
+            
             # Create the formatted string
-
             formatted_ie_input = f"parse_input('{VerbType}', '{NPType}', '{Intensity}', '{Direction}', '{VerbWord}', {NPWords}, '{EType}', '{P1}', '{P2}', Feedback1, Feedback2, Multiplier)."
             print("IE input:",formatted_ie_input)
 
-            #Get result from inference engine
+            # Get result from inference engine
             f1, f2, multiplier = askInferenceEngine(formatted_ie_input)
 
-            print("IE Response: ", f1, f2, multiplier) #Feedback1 (verb in past), Feedback2 (Effectiveness), Multiplier (Damage)
+            #In case inference engine does not return anything, skip the attack
+            if f1 == "unknown" and f2 == "unknown": 
+                flagskip2 = True 
+            else: 
+                flagskip2 = False
 
-            current_player.attack(opponent, multiplier)
+            #In case the Inference engine returns something, keep carrying out the attack
+            if flagskip2 == False:
+
+                flag_skip3 = current_player.attack(opponent, multiplier, Intensity)
+
+                # In case the attack does not miss (because of attack intensity-varible miss chance)
+                if not flag_skip3:
+                    print("IE Response: ", f1, f2, multiplier) #Feedback1 (verb in past), Feedback2 (Effectiveness), Multiplier (Damage)
+            else:
+                print(f"{current_player.pokemon_name} did not understand your command!")
 
         # Switch players
         if current_player == player1:

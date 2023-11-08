@@ -24,7 +24,7 @@ class Pokemon:
         self.is_defending = False
         self.is_dodging = False
         self.base_damage = 10
-        self.avoid_chance = 0.5
+        self.avoid_chance = 0.6
 
     def __str__(self):
         str = f"Pokemon: {self.pokemon_name}\nHP: {self.hp}\nDistance to enemy pokemon: {self.distance}"
@@ -33,26 +33,53 @@ class Pokemon:
     def is_alive(self):
         return self.hp > 0
 
-    def attack(self, opponent, multiplier):
+    def attack(self, opponent, multiplier, intensity):
+        
+        # Miss chance
+        if intensity == "strong":
+            miss_chance = 0.2
+        elif intensity == "weak":
+            miss_chance = 0.05
+        else:
+            miss_chance = 0.1
 
-        #TODO Add miss chance depending on the adjective (NOT multiplier!!)
+        random_no = random.random()
+        miss = True if random_no <= miss_chance else False 
 
-        dmg = self.base_damage * multiplier
-        opponent.hp -= dmg
+        #Distance-related miss
+        if (opponent.distance >2 and intensity == "weak" ):
+            miss = True
+            print(f"The attack was too weak and {opponent.pokemon_name} is too far!")
 
-        print(f"{self.pokemon_name} dealt to {opponent.pokemon_name} {dmg} HP damage!")
+        #Perform attack depending on miss boolean
+        if not miss:
+            dmg = self.base_damage * multiplier
+            opponent.hp -= dmg
+            print(f"{self.pokemon_name} dealt to {opponent.pokemon_name} {dmg} HP damage!")
+        else:
+            print(f"{self.pokemon_name}'s attack missed!")
+        
+        return miss
 
     def move(self, opponent, direction):
-        if direction == "forward":
-            self.distance -= 1
-            opponent.distance -= 1
-        elif direction == "backward":
-            self.distance += 1
-            opponent.distance += 1
-        else:
-            print("Error: no direction specified. Skipping turn.")
-
-        print(f"{self.pokemon_name} moved {direction} to the opponent!")
+        #Check if distance is between range 1 and 4
+        if self.distance > 1 and self.distance < 4:
+            if direction == "forward":
+                self.distance -= 1
+                opponent.distance -= 1
+                print(f"{self.pokemon_name} moved forward to the opponent!")
+            elif direction == "backward":
+                self.distance += 1
+                opponent.distance += 1
+                print(f"{self.pokemon_name} moved backward from the opponent!")
+            else:
+                print("Error: no direction specified. Skipping turn.")
+        #Set bottom limit to distance
+        elif self.distance <= 1 :
+            print(f"{self.pokemon_name} cannot get closer to {opponent.pokemon_name}!")
+        #Set top limit to distance
+        elif self.distance >= 4:
+            print(f"{self.pokemon_name} cannot get further from {opponent.pokemon_name}!")
 
     def defend(self):
         self.is_defending = True
@@ -108,6 +135,9 @@ def handle_defend(opponent, intensity):
         defend_success = True
         if (opponent.distance <=2 and intensity == "strong" ):
             defend_success = False
+        elif (opponent.distance <=1 and intensity == "none" ):
+            defend_success = False
+
         #TODO add more rules in which defense is broken
         return defend_success
 

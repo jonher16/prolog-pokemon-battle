@@ -17,8 +17,11 @@ def askInferenceEngine(fol):
     for result in results:
         print(f"Result {i}: {result}")
         i+=1
-    result = results[0]
-    feedback1 = result['Feedback1']
-    feedback2 = result['Feedback2']
-    multiplier = result['Multiplier']
-    return feedback1, feedback2, multiplier
+    if results:
+        result = results[0]
+        feedback1 = result['Feedback1']
+        feedback2 = result['Feedback2']
+        multiplier = result['Multiplier']
+        return feedback1, feedback2, multiplier
+    else:
+        return "unknown","unknown",0
