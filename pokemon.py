@@ -108,6 +108,7 @@ def handle_defend(opponent, intensity):
         defend_success = True
         if (opponent.distance <=2 and intensity == "strong" ):
             defend_success = False
+        #TODO add more rules in which defense is broken
         return defend_success
 
 def handle_dodge(opponent):

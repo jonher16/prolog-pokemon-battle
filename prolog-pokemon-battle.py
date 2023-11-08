@@ -60,7 +60,7 @@ def main():
 
         if opponent.is_dodging and ((VerbType != 'defend') or (VerbType != 'dodge') or (VerbType != 'move')): #Only If opponent is dodging and current pokemon attacks
             success = handle_dodge(opponent)
-            if success == False:
+            if success == True:
                 flag_skip = True
                 print(f"{opponent.pokemon_name} avoided the attack!")
                 #TODO Decrease dodge chance a 10%
@@ -83,19 +83,19 @@ def main():
         if opponent.is_dodging:
             opponent.is_dodging = False # Opponent Stop dodging no matter what after this turn
 
-        if VerbType == 'move':
+        if (VerbType == 'move' or NPType == 'move'):
             current_player.move(opponent, Direction)
             flag_skip = True
 
-        if VerbType == 'dodge':
+        elif (VerbType == 'dodge' or NPType == 'dodge'):
             current_player.dodge()
             flag_skip = True
         
-        if VerbType == 'defend':
+        elif (VerbType == 'defend' or NPType == 'defend'):
             current_player.defend()
             flag_skip = True
 
-        if flag_skip == False:
+        elif flag_skip == False:
             # Create the formatted string
 
             formatted_ie_input = f"parse_input('{VerbType}', '{NPType}', '{Intensity}', '{Direction}', '{VerbWord}', {NPWords}, '{EType}', '{P1}', '{P2}', Feedback1, Feedback2, Multiplier)."
