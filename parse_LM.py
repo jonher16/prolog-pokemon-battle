@@ -10,7 +10,7 @@ def askLanguageModel(user_input):
 
     # Define query
     str(user_input)
-    query = f'once(parse_input("{user_input}", VerbType, NPType, Intensity, Direction, VerbWord, NPWords)).'
+    query = f'parse_input("{user_input}", VerbType, NPType, Intensity, Direction, VerbWord, NPWords).'
 
     # Query Prolog
     results = list(prolog.query(query))
