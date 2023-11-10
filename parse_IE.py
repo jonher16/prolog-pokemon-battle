@@ -19,9 +19,9 @@ def askInferenceEngine(fol):
         i+=1
     if results:
         result = results[0]
-        feedback1 = result['Feedback1']
-        feedback2 = result['Feedback2']
-        multiplier = result['Multiplier']
+        feedback1 = str(result['Feedback1'])
+        feedback2 = str(result['Feedback2'])
+        multiplier = float(result['Multiplier'])
         return feedback1, feedback2, multiplier
     else:
         return "unknown","unknown",0

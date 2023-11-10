@@ -127,8 +127,7 @@ determine_feedback(AType, EType, Intensity, P1, Feedback, Multiplier, Error):-
 feedback(VerbType, NPType, EType, Intensity, P1, Feedback2, Multiplier) :-
     determine_atype(VerbType, NPType, AType, Error),
     determine_error(AType, P1, Error),
-    determine_feedback(AType, EType, Intensity, P1, Feedback, Multiplier, Error)
-    .
+    determine_feedback(AType, EType, Intensity, P1, Feedback2, Multiplier, Error).
 
 % Query to get the feedback and multiplier based on input parameters
 parse_input(VerbType, NPType, Intensity, Direction, VerbWord, NPWords, EType, P1, P2, Feedback1, Feedback2, Multiplier) :-

@@ -99,7 +99,7 @@ def main():
         elif flag_skip == False:
             
             # Create the formatted string
-            formatted_ie_input = f"parse_input('{VerbType}', '{NPType}', '{Intensity}', '{Direction}', '{VerbWord}', {NPWords}, '{EType}', '{P1}', '{P2}', Feedback1, Feedback2, Multiplier)."
+            formatted_ie_input = f"parse_input('{VerbType}', '{NPType}', '{Intensity}', '{Direction}', '{VerbWord}', {NPWords}, '{EType}', '{P1.lower()}', '{P2.lower()}', Feedback1, Feedback2, Multiplier)."
             print("IE input:",formatted_ie_input)
 
             # Get result from inference engine
