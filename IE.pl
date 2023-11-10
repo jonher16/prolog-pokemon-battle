@@ -41,7 +41,7 @@ determine_atype(VerbType, NPType, AType, Error):-
     (VerbType == 'normal', NPType == 'electric', AType = 'electric', Error = 0);
     (VerbType == 'electric', NPType == 'unknown', AType = 'electric', Error = 0);
     (VerbType == 'unknown', NPType == 'electric', AType = 'electric', Error = 0);
-    (VerbType == 'electric', NPType == 'water', AType = 'electric', Error = 0);
+    (VerbType == 'electric', NPType == 'electric', AType = 'electric', Error = 0);
 
     % Special attack errors
     (VerbType == 'fire', NPType == 'water', AType = 'error', Error = 1);
@@ -51,9 +51,9 @@ determine_atype(VerbType, NPType, AType, Error):-
     (VerbType == 'fire', NPType == 'electric', AType = 'error', Error = 1);
     (VerbType == 'electric', NPType == 'fire', AType = 'error', Error = 1);
     (VerbType == 'water', NPType == 'grass', AType = 'error', Error = 1);
-    (VerbType == 'grass', NPType == 'water', AType = 'error', Error = 1).
+    (VerbType == 'grass', NPType == 'water', AType = 'error', Error = 1);
     (VerbType == 'water', NPType == 'electric', AType = 'error', Error = 1);
-    (VerbType == 'electric', NPType == 'water', AType = 'error', Error = 1).
+    (VerbType == 'electric', NPType == 'water', AType = 'error', Error = 1);
     (VerbType == 'electric', NPType == 'grass', AType = 'error', Error = 1);
     (VerbType == 'grass', NPType == 'electric', AType = 'error', Error = 1).
 
@@ -64,20 +64,26 @@ determine_error(AType, P1, Error):-
     (P1 == 'charmander', AType == 'water', Error = 1);
     (P1 == 'charmander', AType == 'grass', Error = 1);
     (P1 == 'charmander', AType == 'fire', Error = 0);
-    (P1 == 'charmander', AType == 'electric', Error = 0);
+    (P1 == 'charmander', AType == 'electric', Error = 1);
     (P1 == 'charmander', AType == 'normal', Error = 0);
 
     (P1 == 'squirtle', AType == 'fire', Error = 1);
     (P1 == 'squirtle', AType == 'grass', Error = 1);
     (P1 == 'squirtle', AType == 'water', Error = 0);
-    (P1 == 'squirtle', AType == 'electric', Error = 0);
+    (P1 == 'squirtle', AType == 'electric', Error = 1);
     (P1 == 'squirtle', AType == 'normal', Error = 0);
 
     (P1 == 'bulbasaur', AType == 'water', Error = 1);
     (P1 == 'bulbasaur', AType == 'fire', Error = 1);
     (P1 == 'bulbasaur', AType == 'grass', Error = 0);
-    (P1 == 'bulbasaur', AType == 'electric', Error = 0);
-    (P1 == 'bulbasaur', AType == 'normal', Error = 0).
+    (P1 == 'bulbasaur', AType == 'electric', Error = 1);
+    (P1 == 'bulbasaur', AType == 'normal', Error = 0);
+
+    (P1 == 'pikachu', AType == 'water', Error = 1);
+    (P1 == 'pikachu', AType == 'fire', Error = 1);
+    (P1 == 'pikachu', AType == 'grass', Error = 1);
+    (P1 == 'pikachu', AType == 'electric', Error = 0);
+    (P1 == 'pikachu', AType == 'normal', Error = 0).
 
 determine_feedback(AType, EType, Intensity, P1, Feedback, Multiplier, Error):-
     % Error feedback for each pokemon
