@@ -67,7 +67,7 @@ identify_np_type(NPWords, water) :-
     intersection(NPWords, WaterWords, [_|_]),  
     !.
 identify_np_type(NPWords, electric) :-  
-    welectric_words(ElectricWords),
+    electric_words(ElectricWords),
     intersection(NPWords, ElectricWords, [_|_]),  
     !.
 identify_np_type(NPWords, normal) :-
