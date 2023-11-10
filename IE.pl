@@ -51,14 +51,17 @@ determine_error(AType, P1, Error):-
     (P1 == 'charmander', AType == 'water', Error = 1);
     (P1 == 'charmander', AType == 'grass', Error = 1);
     (P1 == 'charmander', AType == 'fire', Error = 0);
+    (P1 == 'charmander', AType == 'normal', Error = 0);
 
     (P1 == 'squirtle', AType == 'fire', Error = 1);
     (P1 == 'squirtle', AType == 'grass', Error = 1);
     (P1 == 'squirtle', AType == 'water', Error = 0);
+    (P1 == 'squirtle', AType == 'normal', Error = 0);
 
     (P1 == 'bulbasaur', AType == 'water', Error = 1);
     (P1 == 'bulbasaur', AType == 'fire', Error = 1);
-    (P1 == 'bulbasaur', AType == 'grass', Error = 0).
+    (P1 == 'bulbasaur', AType == 'grass', Error = 0);
+    (P1 == 'bulbasaur', AType == 'normal', Error = 0).
 
 determine_feedback(AType, EType, Intensity, P1, Feedback, Multiplier, Error):-
     % Error feedback for each pokemon
@@ -110,6 +113,11 @@ determine_feedback(AType, EType, Intensity, P1, Feedback, Multiplier, Error):-
     (AType == 'grass', EType == 'grass', Intensity == 'strong', Feedback = 'The attack was not very effective but dealt some damage!', Multiplier = 1);
     (AType == 'grass', EType == 'grass', Intensity == 'none', Feedback = 'The attack was not very effective...', Multiplier = 0.5);
     (AType == 'grass', EType == 'grass', Intensity == 'weak', Feedback = 'The attack was not effective at all...', Multiplier = 0.25);
+
+    % NORMAL
+    (AType == 'normal', Intensity == 'strong', Feedback = 'The attack was effective!', Multiplier = 2);
+    (AType == 'normal', Intensity == 'none', Feedback = 'The attack was not very effective...', Multiplier = 1);
+    (AType == 'normal', Intensity == 'weak', Feedback = 'The attack was not effective at all...', Multiplier = 0.5);
 
     % ALL-CASE
     (Feedback = 'Unknown action', Multiplier = 'none').
