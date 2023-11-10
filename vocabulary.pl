@@ -8,3 +8,4 @@
 :- consult('vocabulary/normal.pl').
 :- consult('vocabulary/subject.pl').
 :- consult('vocabulary/water.pl').
+:- consult('vocabulary/electric.pl').

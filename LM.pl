@@ -31,6 +31,10 @@ identify_verb_type(Word, water) :-
     water_words(WaterWords),
     member(Word, WaterWords),
     !.
+identify_verb_type(Word, electric) :- 
+    electric_words(ElectricWords),
+    member(Word, ElectricWords),
+    !.
 identify_verb_type(Word, normal) :- 
     normal_words(NormalWords),
     member(Word, NormalWords),

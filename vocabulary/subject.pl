@@ -2,5 +2,6 @@
 subjects([
     'charmander',
     'bulbasaur',
-    'squirtle'
+    'squirtle',
+    'pikachu'
 ]). 
