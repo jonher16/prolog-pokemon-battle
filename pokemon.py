@@ -12,7 +12,11 @@ pokemons = [
     {
         "pokemon_name": "Charmander",
         "type": "fire",
-    }
+    },
+    {
+        "pokemon_name": "Pikachu",
+        "type": "electric",
+    },
 ]
 
 class Pokemon:
