@@ -12,7 +12,11 @@ pokemons = [
     {
         "pokemon_name": "Charmander",
         "type": "fire",
-    }
+    },
+    {
+        "pokemon_name": "Pikachu",
+        "type": "electric",
+    },
 ]
 
 class Pokemon:
@@ -50,7 +54,9 @@ class Pokemon:
         if (opponent.distance >2 and intensity == "weak" ):
             miss = True
             print(f"The attack was too weak and {opponent.pokemon_name} is too far!")
-
+        if (opponent.distance >4):
+            miss = True
+            print(f"{opponent.pokemon_name} is too far away! There is no way you can hit it")
         #Perform attack depending on miss boolean
         if not miss:
             dmg = self.base_damage * multiplier
@@ -62,8 +68,17 @@ class Pokemon:
         return miss
 
     def move(self, opponent, direction):
+        
+        #Set bottom limit to distance
+        if self.distance <= 1 and direction == "forward":
+            print(f"{self.pokemon_name} cannot get closer to {opponent.pokemon_name}!")
+            self.distance = 1
+        #Set top limit to distance
+        elif self.distance >= 4 and direction == "backward":
+            print(f"{self.pokemon_name} cannot get further from {opponent.pokemon_name}!")
+        
         #Check if distance is between range 1 and 4
-        if self.distance > 1 and self.distance < 4:
+        elif self.distance >= 1 and self.distance <= 4:
             if direction == "forward":
                 self.distance -= 1
                 opponent.distance -= 1
@@ -74,12 +89,6 @@ class Pokemon:
                 print(f"{self.pokemon_name} moved backward from the opponent!")
             else:
                 print("Error: no direction specified. Skipping turn.")
-        #Set bottom limit to distance
-        elif self.distance <= 1 :
-            print(f"{self.pokemon_name} cannot get closer to {opponent.pokemon_name}!")
-        #Set top limit to distance
-        elif self.distance >= 4:
-            print(f"{self.pokemon_name} cannot get further from {opponent.pokemon_name}!")
 
     def defend(self):
         self.is_defending = True

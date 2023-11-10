@@ -9,5 +9,6 @@ direction_type('forth', forward).
 
 direction_type('away', backward).
 direction_type('back', backward).
+direction_type('backward', backward).
 direction_type('backwards', backward).
 direction_type('reverse', backward).
