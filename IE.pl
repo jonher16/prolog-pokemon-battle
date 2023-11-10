@@ -51,9 +51,9 @@ determine_atype(VerbType, NPType, AType, Error):-
     (VerbType == 'fire', NPType == 'electric', AType = 'error', Error = 1);
     (VerbType == 'electric', NPType == 'fire', AType = 'error', Error = 1);
     (VerbType == 'water', NPType == 'grass', AType = 'error', Error = 1);
-    (VerbType == 'grass', NPType == 'water', AType = 'error', Error = 1).
+    (VerbType == 'grass', NPType == 'water', AType = 'error', Error = 1);
     (VerbType == 'water', NPType == 'electric', AType = 'error', Error = 1);
-    (VerbType == 'electric', NPType == 'water', AType = 'error', Error = 1).
+    (VerbType == 'electric', NPType == 'water', AType = 'error', Error = 1);
     (VerbType == 'electric', NPType == 'grass', AType = 'error', Error = 1);
     (VerbType == 'grass', NPType == 'electric', AType = 'error', Error = 1).
 
